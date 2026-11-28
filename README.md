@@ -87,17 +87,18 @@ models and is labelled **estimated**.
 
 ## Benchmarks
 
-These are actual outputs from the regression suite:
+These are actual engine outputs. The regression suite covers the key products,
+geometries, and atom conservation.
 
 | Loading | Result | ΔG (kJ) | Geometry |
 |---|---|---|---|
 | 2 H₂ + O₂ | 2 H₂O | −474.2 | Bent, 104.5° |
 | 2 Na + Cl₂ | 2 NaCl | −768.4 | Rock salt, coord. 6 |
-| Ti + ½ O₂ | TiO₂ | −890.5 | Rock salt |
-| 2 Fe + 1.5 O₂ | Fe₂O₃ | −1471.7 | Rock salt |
-| Ca + C + 1.5 O₂ | CaCO₃ | −2267.0 | Rock salt (polyatomic) |
-| H₂ + ⅛ S₈ + 2 O₂ | H₂SO₄ | −5519.5 | Tetrahedral molecule |
-| ½ N₂ + 1.5 H₂ | NH₃ | −32.8 | Trigonal pyramidal, 107° |
+| Ti + O₂ | TiO₂ | −890.5 | Rock salt |
+| 4 Fe + 3 O₂ | 2 Fe₂O₃ | −1471.7 | Rock salt |
+| 2 Ca + 2 C + 3 O₂ | 2 CaCO₃ | −2267.0 | Rock salt (polyatomic) |
+| 8 H₂ + S₈ + 16 O₂ | 8 H₂SO₄ | −5519.5 | Tetrahedral molecule |
+| N₂ + 3 H₂ | 2 NH₃ | −32.8 | Trigonal pyramidal, 107° |
 | C + 2 H₂ | CH₄ | −50.7 | Tetrahedral, 109.5° |
 | C + O₂ | CO₂ | −394.4 | Linear, 180° |
 | Xe + F₂ at 700 K | XeF₂ | −5.0 | Linear, metastable |
@@ -106,7 +107,10 @@ These are actual outputs from the regression suite:
 | Ni + Ti | NiTi | −1.7 | Ordered B2, coord. 8 |
 | Co + Cr + Fe + Mn + Ni | CoCrFeMnNi | −4.0 | FCC solid solution |
 | Ga + As | GaAs | −76.5 | Zincblende, coord. 4 |
-| Na | Na | — | BCC metal |
+| Na | no reaction (elemental BCC shown) | — | BCC metal |
+
+Equations are displayed with the smallest whole-number coefficients, so sulfate
+appears as `8H₂ + S₈ + 16O₂ → 8H₂SO₄` rather than a fractional `⅛ S₈`.
 
 ---
 
