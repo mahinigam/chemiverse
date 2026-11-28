@@ -3690,6 +3690,7 @@ const ELEMENTS_DATA = [
   }
 ];
 
+export { ELEMENTS_DATA };
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { ELEMENTS_DATA };
 }

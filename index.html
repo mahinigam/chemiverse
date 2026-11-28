@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Periodic System & Molecular Synthesis Chamber</title>
+  <title>Periodic System & Universal Chemical Instrument</title>
+  <meta name="description" content="A first-principles chemistry engine: 118 elements, constrained Gibbs minimisation, exact stoichiometry, VSEPR molecules, and crystal lattices.">
+  <meta name="theme-color" content="#06080d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='4' fill='%2338bdf8'/%3E%3Cellipse cx='16' cy='16' rx='13' ry='5.5' fill='none' stroke='%2338bdf8' stroke-width='1.6' transform='rotate(30 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='13' ry='5.5' fill='none' stroke='%23a78bfa' stroke-width='1.6' transform='rotate(-30 16 16)'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Three.js and OrbitControls -->
+  <!-- Three.js and OrbitControls (global build for the visualiser) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
 
-  <!-- Ambient Laboratory Depth Lighting -->
+  <!-- Ambient laboratory depth lighting -->
   <div class="ambient-light-top"></div>
   <div class="ambient-light-bottom"></div>
 
-  <!-- Primary Top Instrument Bar -->
+  <!-- Primary top instrument bar -->
   <header class="app-header">
     <div class="header-inner">
       <div class="brand-group">
@@ -31,12 +34,12 @@
         </div>
         <div class="brand-text">
           <div class="brand-title">PERIODIC SYSTEM OF THE ELEMENTS</div>
-          <div class="brand-meta">IUPAC Standard • 118 Elements • First-Principles Quantum States</div>
+          <div class="brand-meta">IUPAC Standard · 118 Elements · First-Principles Quantum Engine</div>
         </div>
       </div>
 
       <div class="header-nav">
-        <a href="#reaction-lab-section" class="instrument-btn primary">
+        <a href="#reaction-lab-section" class="instrument-btn">
           <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M10 2v7.5L4.5 19.5A2 2 0 006.3 22h11.4a2 2 0 001.8-2.5L14 9.5V2"/>
             <path d="M8.5 2h7"/>
@@ -44,45 +47,46 @@
           </svg>
           <span>Reaction Chamber</span>
         </a>
+        <a href="#engine-methods" class="instrument-btn ghost">Methods</a>
       </div>
     </div>
   </header>
 
-  <!-- Instrument Controls Deck -->
+  <!-- Instrument controls deck -->
   <section class="controls-deck">
     <div class="controls-deck-inner">
-      <!-- Search Field -->
+      <!-- Search field -->
       <div class="search-cell">
         <svg class="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.35-4.35"/>
         </svg>
-        <input type="text" id="search-input" placeholder="Search by name, symbol, or atomic number (e.g., Ti, Titanium, 22)..." autocomplete="off" spellcheck="false">
+        <input type="text" id="search-input" placeholder="Search name, symbol, or atomic number…" autocomplete="off" spellcheck="false">
         <span class="search-key-badge">ESC</span>
       </div>
 
-      <!-- Thermal State Instrument Slider -->
+      <!-- Thermal state instrument slider -->
       <div class="thermal-gauge">
         <div class="gauge-label-col">
           <span class="gauge-label">THERMAL REGIME</span>
-          <span class="thermal-phase-badge" id="thermal-phase-indicator">CONDENSED SOLID</span>
+          <span class="thermal-phase-badge" id="thermal-phase-indicator">STANDARD AMBIENT</span>
         </div>
         <div class="slider-track-wrap">
-          <input type="range" id="temp-slider" min="0" max="6000" value="293" step="5">
+          <input type="range" id="temp-slider" min="1" max="6000" value="298" step="1" aria-label="Temperature in kelvin">
           <div class="gauge-ticks">
-            <span>0K</span>
-            <span>273K</span>
-            <span>1000K</span>
-            <span>3000K</span>
-            <span>6000K</span>
+            <span>1 K</span>
+            <span>298 K</span>
+            <span>1000 K</span>
+            <span>3000 K</span>
+            <span>6000 K</span>
           </div>
         </div>
-        <div class="temp-readout" id="temp-display">293 K · 20.0 °C</div>
+        <div class="temp-readout" id="temp-display">298 K · 24.9 °C</div>
       </div>
     </div>
 
-    <!-- Category Selector Tabs -->
-    <div class="category-strip" id="category-filters">
+    <!-- Category selector tabs -->
+    <div class="category-strip" id="category-filters" role="tablist" aria-label="Element categories">
       <button class="cat-tab active" data-category="all">All Elements</button>
       <button class="cat-tab" data-category="alkali-metal"><span class="pip pip-alkali"></span>Alkali Metals</button>
       <button class="cat-tab" data-category="alkaline-earth"><span class="pip pip-alkaline"></span>Alkaline Earth</button>
@@ -97,26 +101,21 @@
     </div>
   </section>
 
-  <!-- Authoritative Periodic Table Grid -->
+  <!-- Authoritative periodic table grid -->
   <main class="table-stage">
-    <!-- Group Column Coordinates (1-18) -->
-    <div class="group-axis">
+    <div class="group-axis" aria-hidden="true">
       <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
       <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
       <span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span>
     </div>
 
-    <!-- Main Grid with Period Row Indicators -->
     <div class="table-frame">
-      <div class="period-axis">
+      <div class="period-axis" aria-hidden="true">
         <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
       </div>
-      <div class="periodic-grid" id="periodic-grid">
-        <!-- Rendered by app.js -->
-      </div>
+      <div class="periodic-grid" id="periodic-grid"></div>
     </div>
 
-    <!-- F-Block Separated Series (Lanthanides & Actinides) -->
     <div class="f-block-stage">
       <div class="f-block-bracket">
         <div class="f-block-label">57–71 · Lanthanide Series</div>
@@ -129,10 +128,9 @@
     </div>
   </main>
 
-  <!-- High-Precision Element Inspection Modal -->
-  <div class="modal-backdrop hidden" id="element-modal">
+  <!-- High-precision element inspection modal -->
+  <div class="modal-backdrop hidden" id="element-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
     <div class="modal-instrument-window">
-      <!-- Modal Top Bar -->
       <div class="modal-top-bar">
         <div class="spec-identity">
           <div class="monolith-symbol" id="modal-symbol">H</div>
@@ -143,21 +141,19 @@
             </div>
             <div class="spec-pill-strip">
               <span class="spec-chip" id="modal-category-badge">Reactive Nonmetal</span>
-              <span class="spec-chip" id="modal-state-badge">Gas at STP</span>
+              <span class="spec-chip" id="modal-state-badge">Gas at 298 K</span>
               <span class="spec-chip mono" id="modal-mass">1.008 u</span>
             </div>
           </div>
         </div>
-        <button class="btn-close" id="close-modal-btn" aria-label="Close Inspection Window">
+        <button class="btn-close" id="close-modal-btn" aria-label="Close inspection window">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6 6 18M6 6l12 12"/>
           </svg>
         </button>
       </div>
 
-      <!-- Modal Body Split -->
       <div class="modal-body-split">
-        <!-- Left: 3D Quantum Viewport -->
         <div class="viewport-card">
           <div class="viewport-toolbar">
             <div class="toggle-tabs">
@@ -165,13 +161,13 @@
               <button class="toggle-tab" id="tab-allotrope">Elemental State</button>
             </div>
             <div class="viewport-actions">
-              <button class="action-btn" id="toggle-spacefilling-modal" title="Toggle Van der Waals Spheres">
+              <button class="action-btn" id="toggle-spacefilling-modal" title="Toggle van der Waals spheres" aria-label="Toggle space filling">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <circle cx="12" cy="12" r="9"/>
                   <circle cx="12" cy="12" r="4"/>
                 </svg>
               </button>
-              <button class="action-btn" id="reset-3d-modal" title="Reset Viewport Angle">
+              <button class="action-btn" id="reset-3d-modal" title="Reset viewport" aria-label="Reset viewport">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/>
                   <path d="M3 3v5h5"/>
@@ -180,56 +176,57 @@
             </div>
           </div>
           <div class="canvas-viewport" id="element-3d-canvas"></div>
-          <div class="canvas-footer-hint">Left Drag: Orbit 360° · Right Drag: Pan · Scroll: Zoom</div>
+          <div class="canvas-footer-hint">Left drag: orbit · Right drag: pan · Scroll: zoom</div>
         </div>
 
-        <!-- Right: Physical Constants & Electronic Properties -->
         <div class="spec-details-column">
-          <p class="summary-paragraph" id="modal-summary">Element overview...</p>
-          <div class="properties-matrix" id="modal-properties-list">
-            <!-- Populated dynamically -->
-          </div>
+          <p class="summary-paragraph" id="modal-summary">Element overview…</p>
+          <div class="properties-matrix" id="modal-properties-list"></div>
         </div>
       </div>
 
-      <!-- Modal Actions -->
       <div class="modal-action-bar">
         <button class="instrument-btn primary-action" id="send-to-lab-btn">
           <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 5v14M5 12h14"/>
           </svg>
-          <span>Stage Element in Reaction Chamber</span>
+          <span>Stage in Reaction Chamber</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Multi-Element Universal Reaction Chamber -->
+  <!-- Universal reaction chamber -->
   <section class="reaction-chamber-section" id="reaction-lab-section">
     <div class="section-header">
       <div class="indicator-badge">FIRST-PRINCIPLES SYNTHESIS</div>
       <h2>Universal Reaction Chamber</h2>
-      <p class="header-desc">Stage any combination of elements to compute chemical compatibility, bonding nature, orbital hybridization, and 3D molecular structure.</p>
+      <p class="header-desc">Stage any combination of elements with real molar amounts. The engine enumerates species from oxidation-state combinatorics, minimises Gibbs energy under exact element conservation, balances the equation with rational arithmetic, and solves the product geometry.</p>
     </div>
 
-    <!-- Curated Benchmarks Bar -->
-    <div class="benchmark-strip">
-      <span class="benchmark-label">Reference Benchmarks:</span>
-      <button class="bench-pill" data-elements="Ti,N">Titanium Nitride (Ti-N)</button>
-      <button class="bench-pill" data-elements="C,H,O">Ethanol Matrix (C-H-O)</button>
-      <button class="bench-pill" data-elements="H,O,S">Sulfuric Acid (H-O-S)</button>
-      <button class="bench-pill" data-elements="H,N,O">Nitric Acid (H-N-O)</button>
-      <button class="bench-pill" data-elements="Ca,C,O">Calcite (Ca-C-O)</button>
-      <button class="bench-pill" data-elements="Na,O,H">Caustic Soda (Na-O-H)</button>
-      <button class="bench-pill" data-elements="Fe,Cr,Ni,C">Stainless Steel (Fe-Cr-Ni-C)</button>
-      <button class="bench-pill" data-elements="Y,Ba,Cu,O">YBCO Superconductor</button>
-      <button class="bench-pill" data-elements="Ni,Ti">Nitinol Memory Alloy</button>
-      <button class="bench-pill" data-elements="Ga,As">GaAs Semiconductor</button>
-      <button class="bench-pill" data-elements="H,O">Water (H-O)</button>
-      <button class="bench-pill" data-elements="Na,Cl">Halite Salt (Na-Cl)</button>
+    <!-- Curated benchmarks -->
+    <div class="benchmark-strip" id="benchmark-strip">
+      <span class="benchmark-label">Reference loadings</span>
+      <button class="bench-pill" data-mix="H:2,O:1" data-temp="298">Water</button>
+      <button class="bench-pill" data-mix="Na:2,Cl:1" data-temp="298">Halite</button>
+      <button class="bench-pill" data-mix="C:1,H:2" data-temp="298">Methane</button>
+      <button class="bench-pill" data-mix="N:0.5,H:1.5" data-temp="298">Ammonia</button>
+      <button class="bench-pill" data-mix="C:1,O:1" data-temp="298">Carbon dioxide</button>
+      <button class="bench-pill" data-mix="H:1,S:0.125,O:2" data-temp="298">Sulfuric acid</button>
+      <button class="bench-pill" data-mix="Ca:1,C:1,O:1.5" data-temp="298">Calcite</button>
+      <button class="bench-pill" data-mix="Ti:1,O:1" data-temp="298">Titania</button>
+      <button class="bench-pill" data-mix="Fe:2,O:1.5" data-temp="298">Hematite</button>
+      <button class="bench-pill" data-mix="Ti:1,N:0.5" data-temp="298">Titanium nitride</button>
+      <button class="bench-pill" data-mix="Ga:1,As:1" data-temp="298">GaAs</button>
+      <button class="bench-pill" data-mix="Ni:1,Ti:1" data-temp="298">Nitinol</button>
+      <button class="bench-pill" data-mix="Fe:1,Cr:1,Ni:1,C:0.1" data-temp="298">Stainless steel</button>
+      <button class="bench-pill" data-mix="Co:1,Cr:1,Fe:1,Mn:1,Ni:1" data-temp="298">Cantor alloy</button>
+      <button class="bench-pill" data-mix="Xe:1,F:1" data-temp="700">XeF₂ (700 K)</button>
+      <button class="bench-pill" data-mix="Ar:1,F:1" data-temp="298">Argon inertness</button>
+      <button class="bench-pill" data-mix="Y:1,Ba:2,Cu:3,O:3.5" data-temp="298">Y–Ba–Cu–O oxides</button>
     </div>
 
-    <!-- Staging Crucible Card -->
+    <!-- Staging crucible -->
     <div class="crucible-chamber">
       <div class="chamber-head">
         <div class="chamber-id">
@@ -240,76 +237,122 @@
           <span class="chamber-title">REACTION CRUCIBLE</span>
           <span id="crucible-count-label" class="chamber-count">(0 elements staged)</span>
         </div>
-        <button class="btn-clear" id="clear-crucible-btn">Clear Crucible</button>
+        <div class="chamber-head-actions">
+          <span class="condition-readout mono" id="condition-readout">298 K · 1.00 bar</span>
+          <button class="btn-clear" id="clear-crucible-btn">Clear</button>
+        </div>
       </div>
 
-      <!-- Active Staged Elements -->
-      <div class="crucible-slots-area" id="crucible-elements-list">
-        <!-- Rendered dynamically -->
-      </div>
+      <div class="crucible-slots-area" id="crucible-elements-list"></div>
 
-      <!-- Trigger Action -->
-      <div class="chamber-actions">
-        <button class="trigger-synthesize-btn" id="synthesize-btn">
-          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
-          </svg>
-          <span>Compute Chemical Reaction</span>
-        </button>
+      <div class="chamber-controls">
+        <label class="control-field">
+          <span class="control-label">PRESSURE</span>
+          <input type="range" id="pressure-slider" min="-1" max="2" step="0.01" value="0" aria-label="Pressure (log10 bar)">
+          <span class="control-value mono" id="pressure-display">1.00 bar</span>
+        </label>
+        <label class="control-field">
+          <span class="control-label">SUPERCELL</span>
+          <select id="supercell-select" class="control-select">
+            <option value="1">1×1×1</option>
+            <option value="2" selected>2×2×2</option>
+            <option value="3">3×3×3</option>
+          </select>
+        </label>
+        <div class="chamber-actions">
+          <button class="trigger-synthesize-btn" id="synthesize-btn">
+            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            <span>Compute Reaction</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Reaction Result Presentation -->
+    <!-- Result dashboard -->
     <div class="result-dashboard hidden" id="reaction-result-card">
       <div class="result-data-pane">
         <div class="equation-panel">
-          <div class="panel-meta">BALANCED REACTION STOICHIOMETRY</div>
-          <div class="equation-string" id="reaction-equation">2Ti(s) + N₂(g) → 2TiN(s)</div>
+          <div class="panel-meta">BALANCED STOICHIOMETRY · EXACT RATIONAL ARITHMETIC</div>
+          <div class="equation-string" id="reaction-equation">—</div>
+          <div class="equation-sub" id="reaction-equation-note"></div>
         </div>
+
+        <div class="status-banner hidden" id="reaction-status"></div>
 
         <div class="metrics-row">
           <div class="metric-block">
-            <span class="metric-caption">BONDING NATURE</span>
-            <span class="metric-value" id="reaction-bond-badge">Mixed Covalent / Metallic</span>
+            <span class="metric-caption">BONDING REGIME</span>
+            <span class="metric-value" id="reaction-bond-badge">—</span>
           </div>
           <div class="metric-block">
-            <span class="metric-caption">ELECTRONEGATIVITY GRADIENT</span>
-            <span class="metric-value mono" id="reaction-delta-en">ΔEN = 1.50</span>
+            <span class="metric-caption">ELECTRONEGATIVITY Δχ</span>
+            <span class="metric-value mono" id="reaction-delta-en">—</span>
           </div>
           <div class="metric-block">
-            <span class="metric-caption">ENTHALPY OF FORMATION</span>
-            <span class="metric-value mono" id="reaction-enthalpy">Exothermic</span>
+            <span class="metric-caption">ENTHALPY ΔH</span>
+            <span class="metric-value mono" id="reaction-enthalpy">—</span>
           </div>
           <div class="metric-block">
-            <span class="metric-caption">COORDINATION GEOMETRY</span>
-            <span class="metric-value" id="reaction-geometry">Octahedral (Oh)</span>
+            <span class="metric-caption">GIBBS ΔG</span>
+            <span class="metric-value mono" id="reaction-gibbs">—</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-caption">GEOMETRY / LATTICE</span>
+            <span class="metric-value" id="reaction-geometry">—</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-caption">COORDINATION</span>
+            <span class="metric-value mono" id="reaction-coordination">—</span>
           </div>
         </div>
 
         <div class="narrative-panel">
-          <div class="panel-meta">PRODUCT CLASSIFICATION & PROPERTIES</div>
-          <h4 id="reaction-title-heading">Titanium(III) Nitride</h4>
-          <p id="reaction-description">Description...</p>
+          <div class="panel-meta">PRODUCT CLASSIFICATION</div>
+          <h4 id="reaction-title-heading">—</h4>
+          <p id="reaction-description">—</p>
         </div>
 
         <div class="narrative-panel">
-          <div class="panel-meta">QUANTUM ORBITAL & BONDING MECHANISM</div>
-          <p id="reaction-mechanism">Mechanism...</p>
+          <div class="panel-meta">QUANTUM &amp; BONDING MECHANISM</div>
+          <p id="reaction-mechanism">—</p>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-panel">
+            <div class="panel-meta">THERMODYNAMIC STATE</div>
+            <div class="data-list" id="reaction-thermo"></div>
+          </div>
+          <div class="detail-panel">
+            <div class="panel-meta">PRODUCTS &amp; SPECTATORS</div>
+            <div class="product-list" id="reaction-products"></div>
+          </div>
+        </div>
+
+        <div class="detail-panel">
+          <div class="panel-meta">QUANTUM TELEMETRY · HEAVIEST STAGED ELEMENT</div>
+          <div class="telemetry-grid" id="reaction-telemetry"></div>
+        </div>
+
+        <div class="detail-panel">
+          <div class="panel-meta">CANDIDATE SPECIES EVALUATED</div>
+          <div class="candidate-list" id="reaction-candidates"></div>
+          <div class="excluded-list" id="reaction-excluded"></div>
         </div>
       </div>
 
-      <!-- 3D Molecular Architecture Viewport -->
       <div class="result-viewport-pane">
         <div class="viewport-toolbar">
-          <span class="viewport-caption">3D MOLECULAR TOPOLOGY</span>
+          <span class="viewport-caption" id="reaction-viewport-caption">3D PRODUCT TOPOLOGY</span>
           <div class="viewport-actions">
-            <button class="action-btn" id="toggle-spacefilling-lab" title="Toggle Van der Waals Spheres">
+            <button class="action-btn" id="toggle-spacefilling-lab" title="Toggle van der Waals spheres" aria-label="Toggle space filling">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <circle cx="12" cy="12" r="9"/>
                 <circle cx="12" cy="12" r="4"/>
               </svg>
             </button>
-            <button class="action-btn" id="reset-3d-lab" title="Reset Viewport">
+            <button class="action-btn" id="reset-3d-lab" title="Reset viewport" aria-label="Reset viewport">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/>
                 <path d="M3 3v5h5"/>
@@ -318,16 +361,56 @@
           </div>
         </div>
         <div class="canvas-viewport" id="reaction-3d-canvas"></div>
-        <div class="canvas-footer-hint">Left Drag: 360° Rotation · Right Drag: Translation · Scroll: Field of View</div>
+        <div class="canvas-footer-hint">Left drag: orbit · Right drag: pan · Scroll: zoom</div>
+        <div class="viewport-legend" id="reaction-legend"></div>
       </div>
     </div>
   </section>
 
-  <!-- Core Data and Reaction Scripts -->
-  <script src="data/elements.js"></script>
-  <script src="data/reactions.js"></script>
-  <script src="js/reaction-engine.js"></script>
-  <script src="js/molecule3d.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Methods / provenance -->
+  <section class="methods-section" id="engine-methods">
+    <div class="methods-inner">
+      <div class="section-header">
+        <div class="indicator-badge">ENGINE ARCHITECTURE</div>
+        <h2>How the instrument computes</h2>
+        <p class="header-desc">No reaction lookup table. Products are generated from element property tensors, selected by constrained Gibbs minimisation, balanced exactly, and rendered from the resulting topology.</p>
+      </div>
+      <div class="methods-grid">
+        <article class="method-card">
+          <span class="method-index">A</span>
+          <h3>Element tensors</h3>
+          <p>118 elements with electron configuration, Slater effective nuclear charge, Allen and Pauling electronegativity, ionization energies, electron affinities, radii, oxidation states, and phase data.</p>
+        </article>
+        <article class="method-card">
+          <span class="method-index">E</span>
+          <h3>Quantum exceptions</h3>
+          <p>Relativistic contraction, inert-pair stabilisation, ionic potential, polarising power, and optical absorption edges are derived from the electronic structure rather than stored as rules.</p>
+        </article>
+        <article class="method-card">
+          <span class="method-index">C</span>
+          <h3>Bonding continuum</h3>
+          <p>Van Arkel–Ketelaar ionic/covalent/metallic fractions, Hume-Rothery alloy rules, and kinetic barriers for noble-gas compounds.</p>
+        </article>
+        <article class="method-card">
+          <span class="method-index">B</span>
+          <h3>Gibbs minimisation</h3>
+          <p>A dense simplex solves the constrained linear program; continued-fraction rationalisation produces the smallest integer coefficients for the balanced equation.</p>
+        </article>
+        <article class="method-card">
+          <span class="method-index">D</span>
+          <h3>Geometry</h3>
+          <p>Thomson-point VSEPR domains on a sphere, lone-pair compression, and crystal-lattice generators for FCC, BCC, HCP, diamond, rock-salt, CsCl, fluorite, and zinc-blende.</p>
+        </article>
+        <article class="method-card">
+          <span class="method-index">Δ</span>
+          <h3>Honest provenance</h3>
+          <p>Published formation data is used where available; every fallback is marked <span class="mono">estimated</span>. Kinetic exclusions are reported, not hidden.</p>
+        </article>
+      </div>
+      <div class="methods-footer mono" id="engine-status">Engine idle · 118 element tensors loaded</div>
+    </div>
+  </section>
+
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
